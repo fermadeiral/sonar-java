@@ -720,6 +720,7 @@ public final class CheckList {
       BadTestMethodNameCheck.class,
       BooleanLiteralInAssertionsCheck.class,
       CallSuperInTestCaseCheck.class,
+      FailInTryCatchCheck.class,
       IgnoredTestsCheck.class,
       JunitMethodDeclarationCheck.class,
       NoTestInTestClassCheck.class,
