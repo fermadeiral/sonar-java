@@ -45,7 +45,7 @@ public class MultipleFilesJavaCheckVerifierTest {
   public void verify_unexpected_issue() {
     IssuableSubscriptionVisitor visitor = new JavaCheckVerifierTest.FakeVisitor().withDefaultIssues().withIssue(4, "extra message");
     try {
-      MultipleFilesJavaCheckVerifier.verify(Arrays.asList(FILENAME_ISSUES_FIRST, FILENAME_NO_ISSUE), visitor);
+      MultipleFilesJavaCheckVerifier.verify(Arrays.asList(FILENAME_ISSUES_FIRST, FILENAME_NO_ISSUE), visitor, true);
       Fail.fail("");
     } catch (AssertionError e) {
       assertThat(e).hasMessage("Unexpected at [4]");
@@ -56,7 +56,7 @@ public class MultipleFilesJavaCheckVerifierTest {
   public void verify_combined_missing_expected_and_unexpected_issues() {
     IssuableSubscriptionVisitor visitor = new JavaCheckVerifierTest.FakeVisitor().withDefaultIssues().withIssue(4, "extra message").withoutIssue(1);
     try {
-      MultipleFilesJavaCheckVerifier.verify(Arrays.asList(FILENAME_ISSUES_FIRST, FILENAME_NO_ISSUE), visitor);
+      MultipleFilesJavaCheckVerifier.verify(Arrays.asList(FILENAME_ISSUES_FIRST, FILENAME_NO_ISSUE), visitor, true);
       Fail.fail("");
     } catch (AssertionError e) {
       assertThat(e).hasMessage("Expected {1=[{MESSAGE=message}]}, Unexpected at [4]");
@@ -66,7 +66,7 @@ public class MultipleFilesJavaCheckVerifierTest {
   @Test
   public void verify_issues_in_multiple_files() {
     MultipleFilesJavaCheckVerifier.verify(Arrays.asList(FILENAME_ISSUES_FIRST, FILENAME_ISSUES_SECOND),
-        new JavaCheckVerifierTest.FakeVisitor().withDefaultIssues().withIssue(2, "message B"));
+        new JavaCheckVerifierTest.FakeVisitor().withDefaultIssues().withIssue(2, "message B"), true);
   }
 
   @Test

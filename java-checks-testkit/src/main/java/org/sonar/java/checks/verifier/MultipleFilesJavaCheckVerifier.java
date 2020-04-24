@@ -54,8 +54,8 @@ public class MultipleFilesJavaCheckVerifier extends CheckVerifier {
    * @param filesToScan The files to be analyzed
    * @param check The check to be used for the analysis
    */
-  public static void verify(List<String> filesToScan, JavaFileScanner check) {
-    verify(new MultipleFilesJavaCheckVerifier(), filesToScan, check, false, true);
+  public static Set<AnalyzerMessage> verify(List<String> filesToScan, JavaFileScanner check, boolean test) {
+    return verify(new MultipleFilesJavaCheckVerifier(), filesToScan, check, false, true, test);
   }
 
   /**
@@ -65,7 +65,7 @@ public class MultipleFilesJavaCheckVerifier extends CheckVerifier {
    * @param check The check to be used for the analysis
    */
   public static void verifyNoIssue(List<String> filesToScan, JavaFileScanner check) {
-    verify(new MultipleFilesJavaCheckVerifier(), filesToScan, check, true, true);
+    verify(new MultipleFilesJavaCheckVerifier(), filesToScan, check, true, true, true);
   }
 
   /**
@@ -81,15 +81,20 @@ public class MultipleFilesJavaCheckVerifier extends CheckVerifier {
         return "// NOSEMANTIC_ISSUE";
       }
     };
-    verify(verifier, filesToScan, check, true, false);
+    verify(verifier, filesToScan, check, true, false, true);
   }
 
-  private static void verify(MultipleFilesJavaCheckVerifier verifier, List<String> filesToScan, JavaFileScanner check, boolean expectNoIssues, boolean withSemantic) {
+  private static Set<AnalyzerMessage> verify(MultipleFilesJavaCheckVerifier verifier, List<String> filesToScan, JavaFileScanner check, boolean expectNoIssues, boolean withSemantic, boolean test) {
     if (expectNoIssues) {
       verifier.expectNoIssues();
     }
     Set<AnalyzerMessage> issues = verifier.scanFiles(filesToScan, check, withSemantic);
-    verifier.checkIssues(issues, expectNoIssues);
+    if (test) {
+      verifier.checkIssues(issues, expectNoIssues);
+      return null;
+    } else {
+      return issues;
+    }
   }
 
   private Set<AnalyzerMessage> scanFiles(List<String> filesToScan, JavaFileScanner check, boolean withSemantic) {

@@ -38,7 +38,7 @@ public class SpringBeansShouldBeAccessibleCheckTest {
       "src/test/files/checks/spring/SpringBeansShouldBeAccessibleCheck/ComponentScan/Y2.java",
       "src/test/files/checks/spring/SpringBeansShouldBeAccessibleCheck/ComponentScan/Z2.java",
       "src/test/files/checks/spring/SpringBeansShouldBeAccessibleCheck/ComponentScan/ComponentScan.java");
-    MultipleFilesJavaCheckVerifier.verify(files, new SpringBeansShouldBeAccessibleCheck());
+    MultipleFilesJavaCheckVerifier.verify(files, new SpringBeansShouldBeAccessibleCheck(), true);
     MultipleFilesJavaCheckVerifier.verifyNoIssueWithoutSemantic(files, new SpringBeansShouldBeAccessibleCheck());
   }
 
@@ -50,7 +50,7 @@ public class SpringBeansShouldBeAccessibleCheckTest {
       "src/test/files/checks/spring/SpringBeansShouldBeAccessibleCheck/SpringBootApplication/AnotherSpringBoot.java",
       "src/test/files/checks/spring/SpringBeansShouldBeAccessibleCheck/SpringBootApplication/AnotherOk.java",
       "src/test/files/checks/spring/SpringBeansShouldBeAccessibleCheck/SpringBootApplication/Ok.java");
-    MultipleFilesJavaCheckVerifier.verify(files, new SpringBeansShouldBeAccessibleCheck());
+    MultipleFilesJavaCheckVerifier.verify(files, new SpringBeansShouldBeAccessibleCheck(), true);
     MultipleFilesJavaCheckVerifier.verifyNoIssueWithoutSemantic(files, new SpringBeansShouldBeAccessibleCheck());
   }
 
