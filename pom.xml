@@ -60,7 +60,6 @@
     <module>java-surefire</module>
     <module>java-jacoco</module>
     <module>sonar-jacoco-listeners</module>
-    <module>its</module>
   </modules>
 
   <scm>
@@ -98,6 +97,7 @@
     <version.compiler.plugin>3.8.0</version.compiler.plugin>
     <!-- FIXME: warnings on javadoc should be fixed -->
     <doclint>none</doclint>
+    <github.global.server>github</github.global.server>
   </properties>
 
   <dependencyManagement>
@@ -280,6 +280,33 @@
 
     <plugins>
       <plugin>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>3.0.0-M1</version>
+      </plugin>
+      <plugin>
+        <groupId>com.github.github</groupId>
+        <artifactId>site-maven-plugin</artifactId>
+        <version>0.12</version>
+        <configuration>
+          <repositoryOwner>fermadeiral</repositoryOwner> <!-- organization or user name  -->
+          <repositoryName>maven-repository</repositoryName> <!-- github repo name -->
+          <branch>refs/heads/master</branch> <!-- remote branch name -->
+          <message>Maven artifacts for ${project.artifactId}-${project.version}</message> <!-- git commit message -->
+          <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> <!-- matches distribution management repository url above -->
+          <includes><include>**/*</include></includes>
+          <merge>true</merge>
+          <noJekyll>true</noJekyll>  <!-- disable webpage processing -->
+        </configuration>
+        <executions> <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
+          <execution>
+            <goals>
+              <goal>site</goal>
+            </goals>
+            <phase>deploy</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>de.thetaphi</groupId>
         <artifactId>forbiddenapis</artifactId>
         <version>2.6</version>
@@ -329,4 +356,18 @@
       </properties>
     </profile>
   </profiles>
+
+  <distributionManagement>
+    <repository>
+      <id>internal-repo</id>
+      <name>Temporary Staging Repository</name>
+      <url>file://${project.build.directory}/mvn-repo/releases</url>
+    </repository>
+    <snapshotRepository>
+      <id>internal-snapshot-repo</id>
+      <name>Temporary Staging Snapshot Repository</name>
+      <url>file://${project.build.directory}/mvn-repo/snapshots</url>
+    </snapshotRepository>
+  </distributionManagement>
+
 </project>
